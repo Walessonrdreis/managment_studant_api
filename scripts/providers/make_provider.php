@@ -13,7 +13,7 @@ if (!is_dir($providerDir)) {
     mkdir($providerDir, 0755, true);
 }
 
-$providerFile = $providerDir . "/{$providerName}.php";
+$providerFile = $providerDir . "/{$providerName}ServiceProvider.php";
 
 if (file_exists($providerFile)) {
     echo "O ServiceProvider '{$providerName}' já existe!\n";

@@ -13,7 +13,7 @@ if (!is_dir($serviceDir)) {
     mkdir($serviceDir, 0755, true);
 }
 
-$serviceFile = $serviceDir . "/{$serviceName}.php";
+$serviceFile = $serviceDir . "/{$serviceName}Service.php";
 
 if (file_exists($serviceFile)) {
     echo "O serviço '{$serviceName}' já existe!\n";
