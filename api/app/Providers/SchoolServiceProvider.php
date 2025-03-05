@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\SchoolService;
 
 class SchoolServiceProvider extends ServiceProvider {
     /**
@@ -11,7 +12,9 @@ class SchoolServiceProvider extends ServiceProvider {
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(SchoolService::class, function ($app) {
+            return new SchoolService();
+        });
     }
 
     /**

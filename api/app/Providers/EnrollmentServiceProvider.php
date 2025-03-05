@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\EnrollmentService;
 
 class EnrollmentServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,9 @@ class EnrollmentServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(EnrollmentService::class, function ($app) {
+            return new EnrollmentService();
+        });
     }
 
     /**
