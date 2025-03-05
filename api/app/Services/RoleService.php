@@ -10,12 +10,22 @@ class RoleService {
      * Este serviço contém métodos para criar, ler, atualizar e excluir papéis.
      */
 
-    public function createRole($data)
+    public function createRole(array $data)
     {
         return Role::create($data);
     }
 
-    public function updateRole($id, $data)
+    public function getAllRoles()
+    {
+        return Role::all();
+    }
+
+    public function getRoleById($id)
+    {
+        return Role::find($id);
+    }
+
+    public function updateRole($id, array $data)
     {
         $role = Role::find($id);
         if ($role) {
@@ -33,15 +43,5 @@ class RoleService {
             return true;
         }
         return false;
-    }
-
-    public function getAllRoles()
-    {
-        return Role::all();
-    }
-
-    public function getRoleById($id)
-    {
-        return Role::find($id);
     }
 }
