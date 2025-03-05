@@ -23,7 +23,7 @@ class SchoolController extends Controller
     // Listar todas as escolas
     public function index()
     {
-        $schools = School::all();
+        $schools = $this->schoolService->getAllSchools();
         return response()->json($schools);
     }
 
@@ -36,7 +36,7 @@ class SchoolController extends Controller
         ]);
 
         // Criar uma nova instância do modelo School
-        $school = School::create($request->only('name'));
+        $school = $this->schoolService->createSchool($request->only('name'));
 
         // Retornar resposta
         return response()->json([
@@ -49,7 +49,7 @@ class SchoolController extends Controller
     // Obter detalhes de uma escola específica
     public function show($id)
     {
-        $school = School::find($id);
+        $school = $this->schoolService->getSchoolById($id);
         if (!$school) {
             return response()->json(['message' => 'Escola não encontrada'], 404);
         }
@@ -59,7 +59,7 @@ class SchoolController extends Controller
     // Atualizar informações de uma escola
     public function update(Request $request, $id)
     {
-        $school = School::find($id);
+        $school = $this->schoolService->getSchoolById($id);
         if (!$school) {
             return response()->json(['message' => 'Escola não encontrada'], 404);
         }
@@ -68,7 +68,7 @@ class SchoolController extends Controller
             'name' => 'sometimes|required|string|max:255',
         ]);
 
-        $school->update($request->only('name'));
+        $school = $this->schoolService->updateSchool($id, $request->only('name'));
 
         return response()->json(['success' => true, 'message' => 'Escola atualizada com sucesso', 'data' => $school]);
     }
@@ -76,12 +76,12 @@ class SchoolController extends Controller
     // Excluir uma escola
     public function destroy($id)
     {
-        $school = School::find($id);
+        $school = $this->schoolService->getSchoolById($id);
         if (!$school) {
             return response()->json(['message' => 'Escola não encontrada'], 404);
         }
 
-        $school->delete();
+        $this->schoolService->deleteSchool($id);
         return response()->json(['message' => 'Escola excluída com sucesso']);
     }
 }

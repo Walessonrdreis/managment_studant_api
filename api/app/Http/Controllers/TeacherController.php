@@ -23,7 +23,7 @@ class TeacherController extends Controller
     // Listar todos os professores
     public function index()
     {
-        $teachers = Teacher::all();
+        $teachers = $this->teacherService->getAllTeachers();
         return response()->json($teachers);
     }
 
@@ -36,7 +36,7 @@ class TeacherController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $teacher = Teacher::create($request->only('name', 'subject', 'user_id'));
+        $teacher = $this->teacherService->createTeacher($request->only('name', 'subject', 'user_id'));
 
         return response()->json(['success' => true, 'message' => 'Professor criado com sucesso', 'data' => $teacher], 201);
     }
@@ -44,7 +44,7 @@ class TeacherController extends Controller
     // Obter detalhes de um professor específico
     public function show($id)
     {
-        $teacher = Teacher::find($id);
+        $teacher = $this->teacherService->getTeacherById($id);
         if (!$teacher) {
             return response()->json(['message' => 'Professor não encontrado'], 404);
         }
@@ -54,17 +54,10 @@ class TeacherController extends Controller
     // Atualizar informações de um professor
     public function update(Request $request, $id)
     {
-        $teacher = Teacher::find($id);
+        $teacher = $this->teacherService->updateTeacher($id, $request->only('name', 'subject'));
         if (!$teacher) {
             return response()->json(['message' => 'Professor não encontrado'], 404);
         }
-
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:teachers,email,' . $id,
-        ]);
-
-        $teacher->update($request->only('name', 'email'));
 
         return response()->json(['success' => true, 'message' => 'Professor atualizado com sucesso', 'data' => $teacher]);
     }
@@ -72,12 +65,7 @@ class TeacherController extends Controller
     // Excluir um professor
     public function destroy($id)
     {
-        $teacher = Teacher::find($id);
-        if (!$teacher) {
-            return response()->json(['message' => 'Professor não encontrado'], 404);
-        }
-
-        $teacher->delete();
+        $this->teacherService->deleteTeacher($id);
         return response()->json(['message' => 'Professor excluído com sucesso']);
     }
 }

@@ -23,7 +23,7 @@ class AttendanceController extends Controller
     // Listar todas as presenças
     public function index()
     {
-        $attendances = Attendance::all();
+        $attendances = $this->attendanceService->getAllAttendances();
         return response()->json($attendances);
     }
 
@@ -36,7 +36,7 @@ class AttendanceController extends Controller
             'status' => 'required|string',
         ]);
 
-        $attendance = Attendance::create($request->only('student_id', 'date', 'status'));
+        $attendance = $this->attendanceService->recordAttendance($request->only('student_id', 'date', 'status'));
 
         return response()->json(['success' => true, 'message' => 'Presença registrada com sucesso', 'data' => $attendance], 201);
     }
@@ -44,7 +44,7 @@ class AttendanceController extends Controller
     // Obter detalhes de uma presença específica
     public function show($id)
     {
-        $attendance = Attendance::find($id);
+        $attendance = $this->attendanceService->getAttendanceById($id);
         if (!$attendance) {
             return response()->json(['message' => 'Presença não encontrada'], 404);
         }
@@ -54,7 +54,7 @@ class AttendanceController extends Controller
     // Atualizar informações de uma presença
     public function update(Request $request, $id)
     {
-        $attendance = Attendance::find($id);
+        $attendance = $this->attendanceService->getAttendanceById($id);
         if (!$attendance) {
             return response()->json(['message' => 'Presença não encontrada'], 404);
         }
@@ -65,7 +65,7 @@ class AttendanceController extends Controller
             'status' => 'sometimes|required|string',
         ]);
 
-        $attendance->update($request->only('student_id', 'date', 'status'));
+        $attendance = $this->attendanceService->updateAttendance($id, $request->only('student_id', 'date', 'status'));
 
         return response()->json(['success' => true, 'message' => 'Presença atualizada com sucesso', 'data' => $attendance]);
     }
@@ -73,12 +73,12 @@ class AttendanceController extends Controller
     // Excluir uma presença
     public function destroy($id)
     {
-        $attendance = Attendance::find($id);
+        $attendance = $this->attendanceService->getAttendanceById($id);
         if (!$attendance) {
             return response()->json(['message' => 'Presença não encontrada'], 404);
         }
 
-        $attendance->delete();
+        $this->attendanceService->deleteAttendance($id);
         return response()->json(['message' => 'Presença excluída com sucesso']);
     }
 }

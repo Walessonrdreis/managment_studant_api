@@ -23,7 +23,7 @@ class SubjectController extends Controller
     // Listar todas as disciplinas
     public function index()
     {
-        $subjects = Subject::all();
+        $subjects = $this->subjectService->getAllSubjects();
         return response()->json($subjects);
     }
 
@@ -34,7 +34,7 @@ class SubjectController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $subject = Subject::create($request->only('name'));
+        $subject = $this->subjectService->createSubject($request->only('name'));
 
         return response()->json(['success' => true, 'message' => 'Disciplina criada com sucesso', 'data' => $subject], 201);
     }
@@ -42,7 +42,7 @@ class SubjectController extends Controller
     // Obter detalhes de uma disciplina específica
     public function show($id)
     {
-        $subject = Subject::find($id);
+        $subject = $this->subjectService->getSubjectById($id);
         if (!$subject) {
             return response()->json(['message' => 'Disciplina não encontrada'], 404);
         }
@@ -52,16 +52,10 @@ class SubjectController extends Controller
     // Atualizar informações de uma disciplina
     public function update(Request $request, $id)
     {
-        $subject = Subject::find($id);
+        $subject = $this->subjectService->updateSubject($id, $request->only('name'));
         if (!$subject) {
             return response()->json(['message' => 'Disciplina não encontrada'], 404);
         }
-
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-        ]);
-
-        $subject->update($request->only('name'));
 
         return response()->json(['success' => true, 'message' => 'Disciplina atualizada com sucesso', 'data' => $subject]);
     }
@@ -69,12 +63,7 @@ class SubjectController extends Controller
     // Excluir uma disciplina
     public function destroy($id)
     {
-        $subject = Subject::find($id);
-        if (!$subject) {
-            return response()->json(['message' => 'Disciplina não encontrada'], 404);
-        }
-
-        $subject->delete();
+        $this->subjectService->deleteSubject($id);
         return response()->json(['message' => 'Disciplina excluída com sucesso']);
     }
 }

@@ -23,7 +23,7 @@ class ClassroomController extends Controller
     // Listar todas as salas de aula
     public function index()
     {
-        $classrooms = Classroom::all();
+        $classrooms = $this->classroomService->getAllClassrooms();
         return response()->json($classrooms);
     }
 
@@ -34,7 +34,7 @@ class ClassroomController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $classroom = Classroom::create($request->only('name'));
+        $classroom = $this->classroomService->createClassroom($request->only('name'));
 
         return response()->json(['success' => true, 'message' => 'Sala de aula criada com sucesso', 'data' => $classroom], 201);
     }
@@ -42,7 +42,7 @@ class ClassroomController extends Controller
     // Obter detalhes de uma sala de aula específica
     public function show($id)
     {
-        $classroom = Classroom::find($id);
+        $classroom = $this->classroomService->getClassroomById($id);
         if (!$classroom) {
             return response()->json(['message' => 'Sala de aula não encontrada'], 404);
         }
@@ -52,16 +52,10 @@ class ClassroomController extends Controller
     // Atualizar informações de uma sala de aula
     public function update(Request $request, $id)
     {
-        $classroom = Classroom::find($id);
+        $classroom = $this->classroomService->updateClassroom($id, $request->only('name'));
         if (!$classroom) {
             return response()->json(['message' => 'Sala de aula não encontrada'], 404);
         }
-
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-        ]);
-
-        $classroom->update($request->only('name'));
 
         return response()->json(['success' => true, 'message' => 'Sala de aula atualizada com sucesso', 'data' => $classroom]);
     }
@@ -69,12 +63,7 @@ class ClassroomController extends Controller
     // Excluir uma sala de aula
     public function destroy($id)
     {
-        $classroom = Classroom::find($id);
-        if (!$classroom) {
-            return response()->json(['message' => 'Sala de aula não encontrada'], 404);
-        }
-
-        $classroom->delete();
+        $this->classroomService->deleteClassroom($id);
         return response()->json(['message' => 'Sala de aula excluída com sucesso']);
     }
 }

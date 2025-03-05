@@ -23,7 +23,7 @@ class UserController extends Controller
     // Listar todos os usuários
     public function index()
     {
-        $users = User::all();
+        $users = $this->userService->getAllUsers();
         return response()->json($users);
     }
 
@@ -38,13 +38,8 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        // Criar um novo usuário
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role_id' => $request->role_id,
-        ]);
+        // Criar um novo usuário usando o serviço
+        $user = $this->userService->createUser($request->only('name', 'email', 'password', 'role_id'));
 
         return response()->json([
             'success' => true,
@@ -56,7 +51,7 @@ class UserController extends Controller
     // Obter detalhes de um usuário específico
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->userService->getUserById($id);
         if (!$user) {
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
@@ -66,7 +61,7 @@ class UserController extends Controller
     // Atualizar informações de um usuário
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = $this->userService->getUserById($id);
         if (!$user) {
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
@@ -80,7 +75,7 @@ class UserController extends Controller
         ]);
 
         // Atualizar informações do usuário
-        $user->update($request->only('name', 'email', 'password', 'role_id'));
+        $user = $this->userService->updateUser($id, $request->only('name', 'email', 'password', 'role_id'));
 
         return response()->json([
             'success' => true,
@@ -92,12 +87,12 @@ class UserController extends Controller
     // Excluir um usuário
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = $this->userService->getUserById($id);
         if (!$user) {
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
 
-        $user->delete();
+        $this->userService->deleteUser($id);
         return response()->json(['message' => 'Usuário excluído com sucesso']);
     }
 }

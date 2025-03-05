@@ -12,7 +12,8 @@ class UserService {
 
     public function createUser($data)
     {
-        // Certifique-se de que o role_id está incluído nos dados
+        // Criptografar a senha antes de criar o usuário
+        $data['password'] = bcrypt($data['password']);
         return User::create($data);
     }
 

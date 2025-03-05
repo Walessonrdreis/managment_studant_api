@@ -23,7 +23,7 @@ class AppointmentController extends Controller
     // Listar todos os agendamentos
     public function index()
     {
-        $appointments = Appointment::all();
+        $appointments = $this->appointmentService->getAllAppointments();
         return response()->json($appointments);
     }
 
@@ -36,7 +36,7 @@ class AppointmentController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $appointment = Appointment::create($request->only('date', 'time', 'user_id'));
+        $appointment = $this->appointmentService->createAppointment($request->only('date', 'time', 'user_id'));
 
         return response()->json(['success' => true, 'message' => 'Agendamento criado com sucesso', 'data' => $appointment], 201);
     }
@@ -44,7 +44,7 @@ class AppointmentController extends Controller
     // Obter detalhes de um agendamento específico
     public function show($id)
     {
-        $appointment = Appointment::find($id);
+        $appointment = $this->appointmentService->getAppointmentById($id);
         if (!$appointment) {
             return response()->json(['message' => 'Agendamento não encontrado'], 404);
         }
@@ -54,18 +54,10 @@ class AppointmentController extends Controller
     // Atualizar informações de um agendamento
     public function update(Request $request, $id)
     {
-        $appointment = Appointment::find($id);
+        $appointment = $this->appointmentService->updateAppointment($id, $request->only('date', 'time', 'user_id'));
         if (!$appointment) {
             return response()->json(['message' => 'Agendamento não encontrado'], 404);
         }
-
-        $request->validate([
-            'date' => 'sometimes|required|date',
-            'time' => 'sometimes|required|string',
-            'user_id' => 'sometimes|required|exists:users,id',
-        ]);
-
-        $appointment->update($request->only('date', 'time', 'user_id'));
 
         return response()->json(['success' => true, 'message' => 'Agendamento atualizado com sucesso', 'data' => $appointment]);
     }
@@ -73,12 +65,7 @@ class AppointmentController extends Controller
     // Excluir um agendamento
     public function destroy($id)
     {
-        $appointment = Appointment::find($id);
-        if (!$appointment) {
-            return response()->json(['message' => 'Agendamento não encontrado'], 404);
-        }
-
-        $appointment->delete();
+        $this->appointmentService->deleteAppointment($id);
         return response()->json(['message' => 'Agendamento excluído com sucesso']);
     }
 }

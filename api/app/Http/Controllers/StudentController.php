@@ -23,7 +23,7 @@ class StudentController extends Controller
     // Listar todos os estudantes
     public function index()
     {
-        $students = Student::all();
+        $students = $this->studentService->getAllStudents();
         return response()->json($students);
     }
 
@@ -37,7 +37,7 @@ class StudentController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $student = Student::create($request->only('name', 'email', 'date_of_birth', 'user_id'));
+        $student = $this->studentService->createStudent($request->only('name', 'email', 'date_of_birth', 'user_id'));
 
         return response()->json(['success' => true, 'message' => 'Estudante criado com sucesso', 'data' => $student], 201);
     }
@@ -45,7 +45,7 @@ class StudentController extends Controller
     // Obter detalhes de um estudante específico
     public function show($id)
     {
-        $student = Student::find($id);
+        $student = $this->studentService->getStudentById($id);
         if (!$student) {
             return response()->json(['message' => 'Estudante não encontrado'], 404);
         }
@@ -55,7 +55,7 @@ class StudentController extends Controller
     // Atualizar informações de um estudante
     public function update(Request $request, $id)
     {
-        $student = Student::find($id);
+        $student = $this->studentService->getStudentById($id);
         if (!$student) {
             return response()->json(['message' => 'Estudante não encontrado'], 404);
         }
@@ -65,7 +65,7 @@ class StudentController extends Controller
             'email' => 'sometimes|required|string|email|max:255|unique:students,email,' . $id,
         ]);
 
-        $student->update($request->only('name', 'email'));
+        $student = $this->studentService->updateStudent($id, $request->only('name', 'email'));
 
         return response()->json(['success' => true, 'message' => 'Estudante atualizado com sucesso', 'data' => $student]);
     }
@@ -73,12 +73,12 @@ class StudentController extends Controller
     // Excluir um estudante
     public function destroy($id)
     {
-        $student = Student::find($id);
+        $student = $this->studentService->getStudentById($id);
         if (!$student) {
             return response()->json(['message' => 'Estudante não encontrado'], 404);
         }
 
-        $student->delete();
+        $this->studentService->deleteStudent($id);
         return response()->json(['message' => 'Estudante excluído com sucesso']);
     }
 }

@@ -17,13 +17,13 @@ class RoleController extends Controller
 
     public function index()
     {
-        return response()->json(Role::all());
+        return response()->json($this->roleService->getAllRoles());
     }
 
     public function store(Request $request)
     {
         $request->validate(['name' => 'required|string|unique:roles']);
-        $role = Role::create($request->only('name'));
+        $role = $this->roleService->createRole($request->only('name'));
         return response()->json($role, 201);
     }
 }

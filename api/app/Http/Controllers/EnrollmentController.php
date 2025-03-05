@@ -23,7 +23,7 @@ class EnrollmentController extends Controller
     // Listar todas as matrículas
     public function index()
     {
-        $enrollments = Enrollment::all();
+        $enrollments = $this->enrollmentService->getAllEnrollments();
         return response()->json($enrollments);
     }
 
@@ -35,7 +35,7 @@ class EnrollmentController extends Controller
             'subject_id' => 'required|exists:subjects,id',
         ]);
 
-        $enrollment = Enrollment::create($request->only('student_id', 'subject_id'));
+        $enrollment = $this->enrollmentService->enrollStudent($request->only('student_id', 'subject_id'));
 
         return response()->json(['success' => true, 'message' => 'Matrícula criada com sucesso', 'data' => $enrollment], 201);
     }
@@ -43,7 +43,7 @@ class EnrollmentController extends Controller
     // Obter detalhes de uma matrícula específica
     public function show($id)
     {
-        $enrollment = Enrollment::find($id);
+        $enrollment = $this->enrollmentService->getEnrollmentById($id);
         if (!$enrollment) {
             return response()->json(['message' => 'Matrícula não encontrada'], 404);
         }
@@ -53,7 +53,7 @@ class EnrollmentController extends Controller
     // Atualizar informações de uma matrícula
     public function update(Request $request, $id)
     {
-        $enrollment = Enrollment::find($id);
+        $enrollment = $this->enrollmentService->getEnrollmentById($id);
         if (!$enrollment) {
             return response()->json(['message' => 'Matrícula não encontrada'], 404);
         }
@@ -63,7 +63,7 @@ class EnrollmentController extends Controller
             'subject_id' => 'sometimes|required|exists:subjects,id',
         ]);
 
-        $enrollment->update($request->only('student_id', 'subject_id'));
+        $enrollment = $this->enrollmentService->updateEnrollment($id, $request->only('student_id', 'subject_id'));
 
         return response()->json(['success' => true, 'message' => 'Matrícula atualizada com sucesso', 'data' => $enrollment]);
     }
@@ -71,12 +71,12 @@ class EnrollmentController extends Controller
     // Excluir uma matrícula
     public function destroy($id)
     {
-        $enrollment = Enrollment::find($id);
+        $enrollment = $this->enrollmentService->getEnrollmentById($id);
         if (!$enrollment) {
             return response()->json(['message' => 'Matrícula não encontrada'], 404);
         }
 
-        $enrollment->delete();
+        $this->enrollmentService->deleteEnrollment($id);
         return response()->json(['message' => 'Matrícula excluída com sucesso']);
     }
 }

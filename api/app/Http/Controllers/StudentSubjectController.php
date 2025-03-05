@@ -23,7 +23,7 @@ class StudentSubjectController extends Controller
     // Listar todas as matrículas de estudantes em disciplinas
     public function index()
     {
-        $studentSubjects = StudentSubject::all();
+        $studentSubjects = $this->studentSubjectService->getAllStudentSubjects();
         return response()->json($studentSubjects);
     }
 
@@ -35,7 +35,7 @@ class StudentSubjectController extends Controller
             'subject_id' => 'required|exists:subjects,id',
         ]);
 
-        $studentSubject = StudentSubject::create($request->only('student_id', 'subject_id'));
+        $studentSubject = $this->studentSubjectService->enrollStudentInSubject($request->only('student_id', 'subject_id'));
 
         return response()->json(['success' => true, 'message' => 'Estudante matriculado na disciplina com sucesso', 'data' => $studentSubject], 201);
     }
@@ -43,7 +43,7 @@ class StudentSubjectController extends Controller
     // Obter detalhes de uma matrícula específica
     public function show($id)
     {
-        $studentSubject = StudentSubject::find($id);
+        $studentSubject = $this->studentSubjectService->getStudentSubjectById($id);
         if (!$studentSubject) {
             return response()->json(['message' => 'Matrícula não encontrada'], 404);
         }
@@ -53,17 +53,10 @@ class StudentSubjectController extends Controller
     // Atualizar informações de uma matrícula
     public function update(Request $request, $id)
     {
-        $studentSubject = StudentSubject::find($id);
+        $studentSubject = $this->studentSubjectService->updateStudentSubject($id, $request->only('student_id', 'subject_id'));
         if (!$studentSubject) {
             return response()->json(['message' => 'Matrícula não encontrada'], 404);
         }
-
-        $request->validate([
-            'student_id' => 'sometimes|required|exists:students,id',
-            'subject_id' => 'sometimes|required|exists:subjects,id',
-        ]);
-
-        $studentSubject->update($request->only('student_id', 'subject_id'));
 
         return response()->json(['success' => true, 'message' => 'Matrícula atualizada com sucesso', 'data' => $studentSubject]);
     }
@@ -71,12 +64,7 @@ class StudentSubjectController extends Controller
     // Excluir uma matrícula
     public function destroy($id)
     {
-        $studentSubject = StudentSubject::find($id);
-        if (!$studentSubject) {
-            return response()->json(['message' => 'Matrícula não encontrada'], 404);
-        }
-
-        $studentSubject->delete();
+        $this->studentSubjectService->deleteStudentSubject($id);
         return response()->json(['message' => 'Matrícula excluída com sucesso']);
     }
 }

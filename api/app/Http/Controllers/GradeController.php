@@ -23,7 +23,7 @@ class GradeController extends Controller
     // Listar todas as notas
     public function index()
     {
-        $grades = Grade::all();
+        $grades = $this->gradeService->getAllGrades();
         return response()->json($grades);
     }
 
@@ -36,7 +36,7 @@ class GradeController extends Controller
             'grade' => 'required|numeric',
         ]);
 
-        $grade = Grade::create($request->only('student_id', 'subject_id', 'grade'));
+        $grade = $this->gradeService->assignGrade($request->only('student_id', 'subject_id', 'grade'));
 
         return response()->json(['success' => true, 'message' => 'Nota criada com sucesso', 'data' => $grade], 201);
     }
@@ -44,7 +44,7 @@ class GradeController extends Controller
     // Obter detalhes de uma nota específica
     public function show($id)
     {
-        $grade = Grade::find($id);
+        $grade = $this->gradeService->getGradeById($id);
         if (!$grade) {
             return response()->json(['message' => 'Nota não encontrada'], 404);
         }
@@ -54,7 +54,7 @@ class GradeController extends Controller
     // Atualizar informações de uma nota
     public function update(Request $request, $id)
     {
-        $grade = Grade::find($id);
+        $grade = $this->gradeService->getGradeById($id);
         if (!$grade) {
             return response()->json(['message' => 'Nota não encontrada'], 404);
         }
@@ -65,7 +65,7 @@ class GradeController extends Controller
             'grade' => 'sometimes|required|numeric',
         ]);
 
-        $grade->update($request->only('student_id', 'subject_id', 'grade'));
+        $grade = $this->gradeService->updateGrade($id, $request->only('student_id', 'subject_id', 'grade'));
 
         return response()->json(['success' => true, 'message' => 'Nota atualizada com sucesso', 'data' => $grade]);
     }
@@ -73,12 +73,12 @@ class GradeController extends Controller
     // Excluir uma nota
     public function destroy($id)
     {
-        $grade = Grade::find($id);
+        $grade = $this->gradeService->getGradeById($id);
         if (!$grade) {
             return response()->json(['message' => 'Nota não encontrada'], 404);
         }
 
-        $grade->delete();
+        $this->gradeService->deleteGrade($id);
         return response()->json(['message' => 'Nota excluída com sucesso']);
     }
 }
