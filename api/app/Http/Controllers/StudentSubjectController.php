@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\StudentSubject;
+use App\Services\Student_SubjectService;
 
 class StudentSubjectController extends Controller
 {
@@ -11,6 +12,13 @@ class StudentSubjectController extends Controller
      * Controlador para gerenciar disciplinas dos estudantes.
      * Este controlador será responsável por matricular estudantes em disciplinas.
      */
+
+    protected $studentSubjectService;
+
+    public function __construct(Student_SubjectService $studentSubjectService)
+    {
+        $this->studentSubjectService = $studentSubjectService;
+    }
 
     // Listar todas as matrículas de estudantes em disciplinas
     public function index()

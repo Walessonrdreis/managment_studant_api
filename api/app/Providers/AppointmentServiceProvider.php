@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\AppointmentService;
 
 class AppointmentServiceProvider extends ServiceProvider {
     /**
@@ -11,7 +12,9 @@ class AppointmentServiceProvider extends ServiceProvider {
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(AppointmentService::class, function ($app) {
+            return new AppointmentService();
+        });
     }
 
     /**

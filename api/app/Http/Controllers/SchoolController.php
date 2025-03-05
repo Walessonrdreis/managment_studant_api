@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\School;
+use App\Services\SchoolService;
 
 class SchoolController extends Controller
 {
+    protected $schoolService;
+
+    public function __construct(SchoolService $schoolService)
+    {
+        $this->schoolService = $schoolService;
+    }
+
     /**
      * Controlador para gerenciar escolas.
      * Este controlador será responsável por criar, ler, atualizar e excluir escolas.

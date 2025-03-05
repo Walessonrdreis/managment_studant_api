@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Classroom;
+use App\Services\ClassroomService;
 
 class ClassroomController extends Controller
 {
+    protected $classroomService;
+
+    public function __construct(ClassroomService $classroomService)
+    {
+        $this->classroomService = $classroomService;
+    }
+
     /**
      * Controlador para gerenciar salas de aula.
      * Este controlador será responsável por criar, ler, atualizar e excluir salas de aula.

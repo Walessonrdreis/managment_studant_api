@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Services\AttendanceService;
 
 class AttendanceController extends Controller
 {
+    protected $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
+
     /**
      * Controlador para gerenciar presenças.
      * Este controlador será responsável por registrar e consultar a presença dos estudantes.

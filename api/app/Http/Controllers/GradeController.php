@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Grade;
+use App\Services\GradeService;
 
 class GradeController extends Controller
 {
+    protected $gradeService;
+
+    public function __construct(GradeService $gradeService)
+    {
+        $this->gradeService = $gradeService;
+    }
+
     /**
      * Controlador para gerenciar notas.
      * Este controlador será responsável por atribuir e consultar notas dos estudantes.

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Enrollment;
+use App\Services\EnrollmentService;
 
 class EnrollmentController extends Controller
 {
@@ -11,6 +12,13 @@ class EnrollmentController extends Controller
      * Controlador para gerenciar matrículas.
      * Este controlador será responsável por matricular estudantes em disciplinas.
      */
+
+    protected $enrollmentService;
+
+    public function __construct(EnrollmentService $enrollmentService)
+    {
+        $this->enrollmentService = $enrollmentService;
+    }
 
     // Listar todas as matrículas
     public function index()

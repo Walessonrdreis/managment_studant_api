@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Services\AppointmentService;
 
 class AppointmentController extends Controller
 {
+    protected $appointmentService;
+
+    public function __construct(AppointmentService $appointmentService)
+    {
+        $this->appointmentService = $appointmentService;
+    }
+
     /**
      * Controlador para gerenciar agendamentos.
      * Este controlador será responsável por criar, ler, atualizar e excluir agendamentos.

@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Teacher;
+use App\Services\TeacherService;
 
 class TeacherController extends Controller
 {
+    protected $teacherService;
+
+    public function __construct(TeacherService $teacherService)
+    {
+        $this->teacherService = $teacherService;
+    }
+
     /**
      * Controlador para gerenciar professores.
      * Este controlador será responsável por criar, ler, atualizar e excluir professores.

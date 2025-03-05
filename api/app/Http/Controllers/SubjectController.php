@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subject;
+use App\Services\SubjectService;
 
 class SubjectController extends Controller
 {
+    protected $subjectService;
+
+    public function __construct(SubjectService $subjectService)
+    {
+        $this->subjectService = $subjectService;
+    }
+
     /**
      * Controlador para gerenciar disciplinas.
      * Este controlador será responsável por criar, ler, atualizar e excluir disciplinas.
