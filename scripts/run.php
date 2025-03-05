@@ -8,6 +8,7 @@ function showMainMenu() {
     echo "3. Gerenciar Modelos\n";
     echo "4. Gerenciar Banco de Dados\n";
     echo "5. Gerenciar Providers\n";
+    echo "6. Gerenciar Testes\n";
     echo "0. Sair\n";
 }
 
@@ -41,6 +42,12 @@ function showProviderMenu() {
     echo "0. Voltar ao Menu Principal\n";
 }
 
+function showTestMenu() {
+    echo "Escolha uma opção:\n";
+    echo "1. Criar Teste\n";
+    echo "0. Voltar ao Menu Principal\n";
+}
+
 function handleMainChoice($choice) {
     switch ($choice) {
         case 1:
@@ -57,6 +64,9 @@ function handleMainChoice($choice) {
             break;
         case 5:
             handleProviderMenu();
+            break;
+        case 6:
+            handleTestMenu();
             break;
         case 0:
             echo "Saindo...\n";
@@ -128,6 +138,20 @@ function handleProviderMenu() {
         $choice = (int)readline("Digite sua escolha: ");
         if ($choice === 1) {
             include 'providers/make_provider.php'; // Script para criar ServiceProvider
+        } elseif ($choice === 0) {
+            return; // Volta ao menu principal
+        } else {
+            echo "Opção inválida. Tente novamente.\n";
+        }
+    }
+}
+
+function handleTestMenu() {
+    while (true) {
+        showTestMenu();
+        $choice = (int)readline("Digite sua escolha: ");
+        if ($choice === 1) {
+            include 'tests/make_test.php'; // Script para criar teste
         } elseif ($choice === 0) {
             return; // Volta ao menu principal
         } else {
