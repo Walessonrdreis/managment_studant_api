@@ -3,5 +3,8 @@
 namespace App\Services;
 
 class SchoolService {
-    // Métodos do serviço aqui
+    /**
+     * Serviço para gerenciar escolas.
+     * Este serviço contém métodos para criar, ler, atualizar e excluir escolas.
+     */
 }

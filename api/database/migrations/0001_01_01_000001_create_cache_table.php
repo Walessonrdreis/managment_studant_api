@@ -7,25 +7,27 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Executa as migrações para criar as tabelas de cache.
      */
     public function up(): void
     {
+        // Cria a tabela 'cache' para armazenar chaves e valores em cache
         Schema::create('cache', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->mediumText('value');
-            $table->integer('expiration');
+            $table->string('key')->primary(); // Chave única para o cache
+            $table->mediumText('value'); // Valor armazenado no cache
+            $table->integer('expiration'); // Tempo de expiração do cache
         });
 
+        // Cria a tabela 'cache_locks' para gerenciar bloqueios de cache
         Schema::create('cache_locks', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->string('owner');
-            $table->integer('expiration');
+            $table->string('key')->primary(); // Chave única para o bloqueio
+            $table->string('owner'); // Proprietário do bloqueio
+            $table->integer('expiration'); // Tempo de expiração do bloqueio
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverte as migrações, removendo as tabelas de cache.
      */
     public function down(): void
     {

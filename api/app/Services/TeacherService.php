@@ -3,5 +3,8 @@
 namespace App\Services;
 
 class TeacherService {
-    // Métodos do serviço aqui
+    /**
+     * Serviço para gerenciar professores.
+     * Este serviço contém métodos para criar, ler, atualizar e excluir professores.
+     */
 }

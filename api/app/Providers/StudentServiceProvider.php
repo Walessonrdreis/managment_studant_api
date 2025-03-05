@@ -7,7 +7,8 @@ use Illuminate\Support\ServiceProvider;
 class StudentServiceProvider extends ServiceProvider
 {
     /**
-     * Register services.
+     * Registra quaisquer serviços da aplicação relacionados a estudantes.
+     * Este método é usado para registrar serviços que a aplicação irá utilizar.
      */
     public function register(): void
     {
@@ -15,7 +16,8 @@ class StudentServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap services.
+     * Inicializa quaisquer serviços da aplicação relacionados a estudantes.
+     * Este método é usado para configurar serviços após serem registrados.
      */
     public function boot(): void
     {

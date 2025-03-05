@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class StudentSubjectController
+class EnrollmentController
 {
     /**
-     * Controlador para gerenciar disciplinas dos estudantes.
+     * Controlador para gerenciar matrículas.
      * Este controlador será responsável por matricular estudantes em disciplinas.
      */
 }

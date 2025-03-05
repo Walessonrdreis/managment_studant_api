@@ -6,7 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class AppointmentServiceProvider extends ServiceProvider {
     /**
-     * Register any application services.
+     * Registra quaisquer serviços da aplicação relacionados a agendamentos.
+     * Este método é usado para registrar serviços que a aplicação irá utilizar.
      */
     public function register(): void
     {
@@ -14,7 +15,8 @@ class AppointmentServiceProvider extends ServiceProvider {
     }
 
     /**
-     * Bootstrap any application services.
+     * Inicializa quaisquer serviços da aplicação relacionados a agendamentos.
+     * Este método é usado para configurar serviços após serem registrados.
      */
     public function boot(): void
     {

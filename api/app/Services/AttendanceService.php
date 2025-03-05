@@ -3,5 +3,8 @@
 namespace App\Services;
 
 class AttendanceService {
-    // Métodos do serviço aqui
+    /**
+     * Serviço para gerenciar presenças.
+     * Este serviço contém métodos para registrar e consultar a presença dos estudantes.
+     */
 }

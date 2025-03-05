@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-class Student_SubjectService {
+class EnrollmentService {
     /**
-     * Serviço para gerenciar disciplinas dos estudantes.
+     * Serviço para gerenciar matrículas.
      * Este serviço contém métodos para matricular estudantes em disciplinas.
      */
 }

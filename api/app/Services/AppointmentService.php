@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
-class AppointmentService  {
-    // Métodos do serviço aqui
+class AppointmentService {
+    /**
+     * Serviço para gerenciar agendamentos.
+     * Este serviço contém métodos para criar, ler, atualizar e excluir agendamentos.
+     */
 }
