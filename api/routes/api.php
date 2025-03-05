@@ -13,6 +13,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\RoleController;
 
 // Rotas para UserController
 Route::get('/users', [UserController::class, 'index']);
@@ -83,6 +84,9 @@ Route::post('/grades', [GradeController::class, 'store']);
 Route::get('/grades/{id}', [GradeController::class, 'show']);
 Route::put('/grades/{id}', [GradeController::class, 'update']);
 Route::delete('/grades/{id}', [GradeController::class, 'destroy']);
+
+// Rotas para RoleController
+Route::apiResource('roles', RoleController::class);
 
 // Testar conexão com o banco de dados
 Route::get('/test-db-connection', function () {

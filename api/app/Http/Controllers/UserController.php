@@ -27,6 +27,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         // Criar um novo usuário
@@ -34,6 +35,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role_id' => $request->role_id,
         ]);
 
         return response()->json([
@@ -66,10 +68,11 @@ class UserController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'sometimes|required|string|min:8',
+            'role_id' => 'sometimes|required|exists:roles,id',
         ]);
 
         // Atualizar informações do usuário
-        $user->update($request->only('name', 'email', 'password'));
+        $user->update($request->only('name', 'email', 'password', 'role_id'));
 
         return response()->json([
             'success' => true,
