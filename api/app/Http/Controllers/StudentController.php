@@ -25,9 +25,11 @@ class StudentController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:students',
+            'date_of_birth' => 'nullable|date',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        $student = Student::create($request->only('name', 'email'));
+        $student = Student::create($request->only('name', 'email', 'date_of_birth', 'user_id'));
 
         return response()->json(['success' => true, 'message' => 'Estudante criado com sucesso', 'data' => $student], 201);
     }

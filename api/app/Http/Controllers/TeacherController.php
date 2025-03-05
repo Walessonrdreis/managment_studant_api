@@ -24,10 +24,11 @@ class TeacherController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:teachers',
+            'subject' => 'nullable|string|max:255',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        $teacher = Teacher::create($request->only('name', 'email'));
+        $teacher = Teacher::create($request->only('name', 'subject', 'user_id'));
 
         return response()->json(['success' => true, 'message' => 'Professor criado com sucesso', 'data' => $teacher], 201);
     }

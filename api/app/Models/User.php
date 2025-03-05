@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Importando a classe base para autenticação
 use Illuminate\Notifications\Notifiable; // Para notificações
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      */
 
     // Campos que podem ser preenchidos em massa
-    protected $fillable = ['name', 'email', 'password', 'role_id'];
+    protected $fillable = ['name', 'email', 'password', 'role_id', 'school_id'];
 
     // Campos que devem ser ocultados em arrays (ex: ao retornar JSON)
     protected $hidden = ['password', 'remember_token'];
@@ -49,6 +50,21 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    public function teachers(): HasMany
+    {
+        return $this->hasMany(Teacher::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
     }
 
     // Outros relacionamentos podem ser adicionados conforme necessário
