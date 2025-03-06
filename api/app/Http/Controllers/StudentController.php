@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\StudentService;
-use App\Http\Controllers\Controller; // Adicione esta linha
+use App\Http\Controllers\Controller;
+use App\Models\User;
+
 class StudentController extends Controller
 {
     protected $studentService;
@@ -37,48 +39,50 @@ class StudentController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $student = $this->studentService->createStudent($request->only('name', 'email', 'date_of_birth', 'user_id'));
+        $user = User::find($request->user_id);
 
-        return response()->json(['success' => true, 'message' => 'Estudante criado com sucesso', 'data' => $student], 201);
+        // Verifique se o usuário tem o papel apropriado
+        if (!$user || !$user->role || strtolower($user->role->name) !== 'student') {
+            return response()->json(['message' => 'O usuário deve ter o papel de estudante para se cadastrar.'], 403);
+        }
+
+        try {
+            $student = $this->studentService->createStudent($request->only('name', 'email', 'date_of_birth', 'user_id'));
+            return response()->json(['success' => true, 'message' => 'Estudante criado com sucesso', 'data' => $student], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500); // Retorna 500 para erros inesperados
+        }
     }
 
     // Obter detalhes de um estudante específico
     public function show($id)
     {
         $student = $this->studentService->getStudentById($id);
-        if (!$student) {
-            return response()->json(['message' => 'Estudante não encontrado'], 404);
-        }
-        return response()->json($student);
+        return $student ? response()->json($student) : response()->json(['message' => 'Estudante não encontrado'], 404);
     }
 
     // Atualizar informações de um estudante
     public function update(Request $request, $id)
     {
-        $student = $this->studentService->getStudentById($id);
-        if (!$student) {
-            return response()->json(['message' => 'Estudante não encontrado'], 404);
-        }
-
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:students,email,' . $id,
-        ]);
-
-        $student = $this->studentService->updateStudent($id, $request->only('name', 'email'));
-
-        return response()->json(['success' => true, 'message' => 'Estudante atualizado com sucesso', 'data' => $student]);
+        $this->validateStudent($request);
+        $student = $this->studentService->updateStudent($id, $request->only('name', 'email', 'date_of_birth', 'user_id'));
+        return $student ? response()->json(['success' => true, 'message' => 'Estudante atualizado com sucesso', 'data' => $student]) : response()->json(['message' => 'Estudante não encontrado'], 404);
     }
 
     // Excluir um estudante
     public function destroy($id)
     {
-        $student = $this->studentService->getStudentById($id);
-        if (!$student) {
-            return response()->json(['message' => 'Estudante não encontrado'], 404);
-        }
-
         $this->studentService->deleteStudent($id);
         return response()->json(['message' => 'Estudante excluído com sucesso']);
+    }
+
+    protected function validateStudent(Request $request)
+    {
+        return $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:students,email,' . $request->id,
+            'date_of_birth' => 'nullable|date',
+            'user_id' => 'required|exists:users,id',
+        ]);
     }
 }
