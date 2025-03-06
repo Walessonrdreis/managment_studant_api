@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
-
+use App\Http\Controllers\Controller; // Adicione esta linha
 class AppointmentController extends Controller
 {
     protected $appointmentService;

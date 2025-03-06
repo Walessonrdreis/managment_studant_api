@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Services\SchoolService;
-
+use App\Http\Controllers\Controller; // Adicione esta linha
 class SchoolController extends Controller
 {
     protected $schoolService;

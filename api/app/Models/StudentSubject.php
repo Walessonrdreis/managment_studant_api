@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StudentSubject extends Model
 {
+    use HasFactory;
     /**
      * Modelo para gerenciar disciplinas dos estudantes.
      * Este modelo representa a tabela de disciplinas dos estudantes no banco de dados.

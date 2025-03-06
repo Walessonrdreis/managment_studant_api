@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Services\AttendanceService;
-
+use App\Http\Controllers\Controller; // Adicione esta linha
 class AttendanceController extends Controller
 {
     protected $attendanceService;

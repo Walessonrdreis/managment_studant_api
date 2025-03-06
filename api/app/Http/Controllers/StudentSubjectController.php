@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\StudentSubject;
 use App\Services\Student_SubjectService;
+use App\Http\Controllers\Controller; // Adicione esta linha
 
 class StudentSubjectController extends Controller
 {

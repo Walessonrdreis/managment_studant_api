@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Importando a classe base para autenticação
 use Illuminate\Notifications\Notifiable; // Para notificações
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
     use Notifiable; // Usando o trait Notifiable para enviar notificações
+    use HasFactory;
 
     /**
      * Modelo para gerenciar usuários.

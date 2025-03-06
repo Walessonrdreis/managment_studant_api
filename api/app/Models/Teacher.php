@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
 class Teacher extends Model
 {
+    use HasFactory;
     /**
      * Modelo para gerenciar professores.
      * Este modelo representa a tabela de professores no banco de dados.

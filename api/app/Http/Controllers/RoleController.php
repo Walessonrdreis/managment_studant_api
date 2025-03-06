@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller; // Adicione esta linha
 class RoleController extends Controller
 {
     protected $roleService;

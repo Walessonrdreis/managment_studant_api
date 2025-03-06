@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Grade extends Model
 {
+    use HasFactory;
     /**
      * Modelo para gerenciar notas.
      * Este modelo representa a tabela de notas no banco de dados.

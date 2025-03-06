@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Student extends Model
 {
+    use HasFactory;
     /**
      * Modelo para gerenciar estudantes.
      * Este modelo representa a tabela de estudantes no banco de dados.

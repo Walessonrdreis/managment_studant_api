@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Enrollment;
 use App\Services\EnrollmentService;
-
+use App\Http\Controllers\Controller; // Adicione esta linha
 class EnrollmentController extends Controller
 {
     /**
