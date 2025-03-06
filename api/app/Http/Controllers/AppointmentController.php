@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
-use App\Http\Controllers\Controller; // Adicione esta linha
+use App\Http\Controllers\Controller;
+
 class AppointmentController extends Controller
 {
     protected $appointmentService;
@@ -31,12 +32,13 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'teacher_id' => 'required|exists:teachers,id',
             'date' => 'required|date',
-            'time' => 'required|string',
-            'user_id' => 'required|exists:users,id',
+            'time' => 'required|date_format:H:i:s',
         ]);
 
-        $appointment = $this->appointmentService->createAppointment($request->only('date', 'time', 'user_id'));
+        $appointment = $this->appointmentService->createAppointment($request->only('student_id', 'teacher_id', 'date', 'time'));
 
         return response()->json(['success' => true, 'message' => 'Agendamento criado com sucesso', 'data' => $appointment], 201);
     }
@@ -54,7 +56,12 @@ class AppointmentController extends Controller
     // Atualizar informações de um agendamento
     public function update(Request $request, $id)
     {
-        $appointment = $this->appointmentService->updateAppointment($id, $request->only('date', 'time', 'user_id'));
+        $request->validate([
+            'date' => 'sometimes|required|date',
+            'time' => 'sometimes|required|date_format:H:i:s',
+        ]);
+
+        $appointment = $this->appointmentService->updateAppointment($id, $request->only('date', 'time'));
         if (!$appointment) {
             return response()->json(['message' => 'Agendamento não encontrado'], 404);
         }

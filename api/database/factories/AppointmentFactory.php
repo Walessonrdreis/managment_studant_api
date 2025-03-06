@@ -15,6 +15,7 @@ class AppointmentFactory extends Factory
             'student_id' => \App\Models\Student::factory(), // Cria um estudante
             'teacher_id' => \App\Models\Teacher::factory(), // Cria um professor
             'date' => $this->faker->dateTimeBetween('now', '+1 week'),
+            'time' => $this->faker->time(), // Gera um horário aleatório
             'school_id' => \App\Models\School::factory(), // Cria uma escola
         ];
     }

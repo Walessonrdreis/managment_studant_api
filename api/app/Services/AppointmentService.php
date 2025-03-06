@@ -17,12 +17,12 @@ class AppointmentService {
 
     public function getAllAppointments()
     {
-        return Appointment::all();
+        return Appointment::with(['student', 'teacher'])->get();
     }
 
     public function getAppointmentById($id)
     {
-        return Appointment::find($id);
+        return Appointment::with(['student', 'teacher'])->find($id);
     }
 
     public function updateAppointment($id, array $data)
