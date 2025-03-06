@@ -5,12 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_user()
     {
         $response = $this->postJson('/api/users', [
@@ -24,7 +25,7 @@ class UserControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Usuário criado com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_list_users()
     {
         User::factory()->count(3)->create();
@@ -35,7 +36,7 @@ class UserControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_a_user()
     {
         $user = User::factory()->create();
@@ -46,7 +47,7 @@ class UserControllerTest extends TestCase
                  ->assertJson(['id' => $user->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_user()
     {
         $user = User::factory()->create();
@@ -60,7 +61,7 @@ class UserControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Usuário atualizado com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_user()
     {
         $user = User::factory()->create();

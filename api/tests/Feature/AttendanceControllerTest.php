@@ -8,12 +8,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Student;
+use PHPUnit\Framework\Attributes\Test;
 
 class AttendanceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_record_attendance()
     {
         // Crie um papel específico para o estudante
@@ -36,7 +37,7 @@ class AttendanceControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Presença registrada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_list_attendances()
     {
         Attendance::factory()->count(3)->create();
@@ -47,7 +48,7 @@ class AttendanceControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_an_attendance()
     {
         $attendance = Attendance::factory()->create();
@@ -58,7 +59,7 @@ class AttendanceControllerTest extends TestCase
                  ->assertJson(['id' => $attendance->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_an_attendance()
     {
         $attendance = Attendance::factory()->create();
@@ -71,7 +72,7 @@ class AttendanceControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Presença atualizada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_an_attendance()
     {
         $attendance = Attendance::factory()->create();

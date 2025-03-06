@@ -5,12 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Subject;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class SubjectControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_subject()
     {
         $response = $this->postJson('/api/subjects', [
@@ -21,7 +22,7 @@ class SubjectControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Disciplina criada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_list_subjects()
     {
         Subject::factory()->count(3)->create();
@@ -32,7 +33,7 @@ class SubjectControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_a_subject()
     {
         $subject = Subject::factory()->create();
@@ -43,7 +44,7 @@ class SubjectControllerTest extends TestCase
                  ->assertJson(['id' => $subject->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_subject()
     {
         $subject = Subject::factory()->create();
@@ -56,7 +57,7 @@ class SubjectControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Disciplina atualizada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_subject()
     {
         $subject = Subject::factory()->create();

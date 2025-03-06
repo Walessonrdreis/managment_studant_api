@@ -7,12 +7,13 @@ use App\Models\Student;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Role;
+use PHPUnit\Framework\Attributes\Test;
 
 class StudentControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_student()
     {
         // Crie um papel específico para o estudante
@@ -42,7 +43,7 @@ class StudentControllerTest extends TestCase
     
     // ... outros métodos de teste ...
 
-    /** @test */
+    #[Test]
     public function it_can_list_students()
     {
         Student::factory()->count(3)->create();
@@ -53,7 +54,7 @@ class StudentControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_a_student()
     {
         $student = Student::factory()->create();
@@ -64,7 +65,7 @@ class StudentControllerTest extends TestCase
                  ->assertJson(['id' => $student->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_student()
     {
         // Crie um papel específico para o estudante
@@ -92,7 +93,7 @@ class StudentControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Estudante atualizado com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_student()
     {
         $student = Student::factory()->create();

@@ -7,12 +7,13 @@ use App\Models\Teacher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Role;
 use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class TeacherControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_teacher()
     {
         // Crie um papel específico para o professor
@@ -39,7 +40,7 @@ class TeacherControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Professor criado com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_list_teachers()
     {
         Teacher::factory()->count(3)->create();
@@ -50,7 +51,7 @@ class TeacherControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_a_teacher()
     {
         $teacher = Teacher::factory()->create();
@@ -61,7 +62,7 @@ class TeacherControllerTest extends TestCase
                  ->assertJson(['id' => $teacher->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_teacher()
     {
         // Crie um papel específico para o professor
@@ -88,7 +89,7 @@ class TeacherControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Professor atualizado com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_teacher()
     {
         $teacher = Teacher::factory()->create();

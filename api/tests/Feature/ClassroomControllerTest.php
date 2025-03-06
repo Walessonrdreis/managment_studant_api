@@ -5,12 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Classroom;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ClassroomControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_classroom()
     {
         $response = $this->postJson('/api/classrooms', [
@@ -21,7 +22,7 @@ class ClassroomControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Sala de aula criada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_list_classrooms()
     {
         Classroom::factory()->count(3)->create();
@@ -32,7 +33,7 @@ class ClassroomControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_a_classroom()
     {
         $classroom = Classroom::factory()->create();
@@ -43,7 +44,7 @@ class ClassroomControllerTest extends TestCase
                  ->assertJson(['id' => $classroom->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_classroom()
     {
         $classroom = Classroom::factory()->create();
@@ -56,7 +57,7 @@ class ClassroomControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Sala de aula atualizada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_classroom()
     {
         $classroom = Classroom::factory()->create();

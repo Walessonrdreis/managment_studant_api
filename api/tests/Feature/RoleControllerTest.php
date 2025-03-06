@@ -6,12 +6,13 @@ use Tests\TestCase;
 use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 
 class RoleControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_role()
     {
         $roleData = [
@@ -24,7 +25,7 @@ class RoleControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Role criada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_list_roles()
     {
         // Cria papéis adicionais se necessário, mas não remove os existentes
@@ -39,7 +40,7 @@ class RoleControllerTest extends TestCase
                  ->assertJsonFragment(['name' => 'Test Role']); // Verifica se o papel adicional está presente
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_a_role()
     {
         $role = Role::factory()->create();
@@ -50,7 +51,7 @@ class RoleControllerTest extends TestCase
                  ->assertJson(['id' => $role->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_role()
     {
         $role = Role::factory()->create();
@@ -63,7 +64,7 @@ class RoleControllerTest extends TestCase
                  ->assertJson(['success' => true, 'message' => 'Role atualizada com sucesso']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_role()
     {
         $role = Role::factory()->create();
