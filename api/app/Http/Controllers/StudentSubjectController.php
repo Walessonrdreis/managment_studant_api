@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\StudentSubject;
 use App\Services\Student_SubjectService;
 use App\Http\Controllers\Controller; // Adicione esta linha
+use App\Models\Subject;
 
 class StudentSubjectController extends Controller
 {
@@ -31,14 +32,32 @@ class StudentSubjectController extends Controller
     // Matricular um estudante em uma disciplina
     public function store(Request $request)
     {
+        // Validação dos dados recebidos
         $request->validate([
             'student_id' => 'required|exists:students,id',
-            'subject_id' => 'required|exists:subjects,id',
+            'subject_id' => 'required', // Remova a validação de existência aqui
         ]);
 
-        $studentSubject = $this->studentSubjectService->enrollStudentInSubject($request->only('student_id', 'subject_id'));
+        // Verifica se a disciplina existe
+        $subject = Subject::find($request->subject_id);
+        if (!$subject) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Não há disciplina para registrar. Aguarde a adição de uma nova disciplina.'
+            ], 404); // Retorna um status 404 se a disciplina não existir
+        }
 
-        return response()->json(['success' => true, 'message' => 'Estudante matriculado na disciplina com sucesso', 'data' => $studentSubject], 201);
+        // Cria a matrícula se a disciplina existir
+        $studentSubject = StudentSubject::create([
+            'student_id' => $request->student_id,
+            'subject_id' => $request->subject_id,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Estudante matriculado na disciplina com sucesso',
+            'data' => $studentSubject,
+        ], 201);
     }
 
     // Obter detalhes de uma matrícula específica
