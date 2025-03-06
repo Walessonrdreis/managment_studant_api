@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Role;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RoleService {
     /**
@@ -22,26 +23,20 @@ class RoleService {
 
     public function getRoleById($id)
     {
-        return Role::find($id);
+        return Role::findOrFail($id);
     }
 
     public function updateRole($id, array $data)
     {
-        $role = Role::find($id);
-        if ($role) {
-            $role->update($data);
-            return $role;
-        }
-        return null;
+        $role = Role::findOrFail($id);
+        $role->update($data);
+        return $role;
     }
 
     public function deleteRole($id)
     {
-        $role = Role::find($id);
-        if ($role) {
-            $role->delete();
-            return true;
-        }
-        return false;
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return $role;
     }
 }

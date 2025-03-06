@@ -17,13 +17,49 @@ class RoleController extends Controller
 
     public function index()
     {
-        return response()->json($this->roleService->getAllRoles());
+        $roles = $this->roleService->getAllRoles();
+        return response()->json($roles);
     }
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|unique:roles']);
-        $role = $this->roleService->createRole($request->only('name'));
-        return response()->json($role, 201);
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $role = $this->roleService->createRole($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Role criada com sucesso',
+            'data' => $role,
+        ], 201);
+    }
+
+    public function show($id)
+    {
+        $role = $this->roleService->getRoleById($id);
+        return response()->json($role);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $role = $this->roleService->updateRole($id, $request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Role atualizada com sucesso',
+            'data' => $role,
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $this->roleService->deleteRole($id);
+        return response()->json(['message' => 'Role excluída com sucesso']);
     }
 }

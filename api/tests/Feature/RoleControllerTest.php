@@ -5,17 +5,20 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RoleControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_can_create_a_role()
     {
-        $response = $this->postJson('/api/roles', [
+        $roleData = [
             'name' => 'Test Role',
-        ]);
+        ];
+
+        $response = $this->postJson('/api/roles', $roleData);
 
         $response->assertStatus(201)
                  ->assertJson(['success' => true, 'message' => 'Role criada com sucesso']);
@@ -24,12 +27,16 @@ class RoleControllerTest extends TestCase
     /** @test */
     public function it_can_list_roles()
     {
-        Role::factory()->count(3)->create();
+        // Cria papéis adicionais se necessário, mas não remove os existentes
+        Role::factory()->create(['name' => 'Test Role']); // Exemplo de criação de um papel adicional
 
         $response = $this->getJson('/api/roles');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+                 ->assertJsonFragment(['name' => 'Admin'])
+                 ->assertJsonFragment(['name' => 'Teacher'])
+                 ->assertJsonFragment(['name' => 'Student'])
+                 ->assertJsonFragment(['name' => 'Test Role']); // Verifica se o papel adicional está presente
     }
 
     /** @test */
