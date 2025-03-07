@@ -15,6 +15,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\PdfController;
+use App\Models\Student;
 
 // Adicionando um prefixo 'api' para todas as rotas
 Route::prefix('api')->group(function () {
@@ -113,12 +114,15 @@ Route::get('/test-db-connection', function () {
 });
 
 Route::get('/student', function () {
-    $student = \App\Models\Student::find(1); // Substitua 1 pelo ID do aluno que você deseja buscar
-    return view('student', compact('student'));
+    return view('student');
 });
 
-Route::middleware(['web'])->group(function () {
-    Route::get('/students/{id}', [StudentController::class, 'show']);
+Route::get('/student/{id}', function ($id) {
+    $student = Student::find($id);
+    if (!$student) {
+        abort(404);
+    }
+    return view('student', compact('student'));
 });
 
 Route::get('/test', function () {
