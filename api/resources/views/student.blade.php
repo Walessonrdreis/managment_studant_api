@@ -45,23 +45,23 @@
     <table>
         <thead>
             <tr>
-                <th>Aula</th>
+                <th>#</th>
                 <th>Data</th>
-                <th>Dia</th>
+                <th>Dia da Semana</th>
                 <th>Hora</th>
                 <th>Professor(a)</th>
                 <th>Disciplina</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($student->appointments as $aula)
+            @foreach ($student->appointments as $classroom)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $aula->date }}</td>
-                    <td>{{ \Carbon\Carbon::parse($aula->date)->translatedFormat('l') }}</td>
-                    <td>{{ $aula->time }}</td>
-                    <td>{{ $aula->teacher->name }}</td>
-                    <td>{{ $aula->subject->name }}</td>
+                    <td>{{ $classroom->date }}</td>
+                    <td>{{ \Carbon\Carbon::parse($classroom->date)->translatedFormat('l') }}</td>
+                    <td>{{ $classroom->time }}</td>
+                    <td>{{ $classroom->teacher ? $classroom->teacher->name : 'Professor não encontrado' }}</td>
+                    <td>{{ $classroom->subject ? $classroom->subject->name : 'Disciplina não encontrada' }}</td>
                 </tr>
             @endforeach
         </tbody>

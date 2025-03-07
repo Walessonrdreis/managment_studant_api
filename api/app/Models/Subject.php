@@ -41,4 +41,13 @@ class Subject extends Model
     {
         return $this->hasMany(StudentSubject::class);
     }
+
+    /**
+     * Define a relação com o modelo Classroom.
+     * Uma disciplina pode ter muitas salas de aula.
+     */
+    public function classrooms(): HasMany
+    {
+        return $this->hasMany(Classroom::class);
+    }
 }

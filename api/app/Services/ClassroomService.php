@@ -25,6 +25,11 @@ class ClassroomService {
         return Classroom::find($id);
     }
 
+    public function getClassroomWithSubjectById($id)
+    {
+        return Classroom::with('subject')->find($id);
+    }
+
     public function updateClassroom($id, array $data)
     {
         $classroom = Classroom::find($id);
@@ -43,5 +48,33 @@ class ClassroomService {
             return true;
         }
         return false;
+    }
+
+    // Método para obter a disciplina associada a uma sala de aula
+    public function getSubjectName($id)
+    {
+        $classroom = $this->getClassroomById($id);
+        return $classroom ? ($classroom->subject ? $classroom->subject->name : 'Nenhuma disciplina associada') : null;
+    }
+
+    // Método para obter o professor associado a uma sala de aula
+    public function getTeacherName($id)
+    {
+        $classroom = $this->getClassroomById($id);
+        return $classroom ? ($classroom->teacher ? $classroom->teacher->name : 'Nenhum professor associado') : null;
+    }
+
+    // Método para obter todos os alunos associados a uma sala de aula
+    public function getAllStudents($id)
+    {
+        $classroom = $this->getClassroomById($id);
+        return $classroom ? $classroom->students : null;
+    }
+
+    // Método para verificar se a sala de aula tem alunos
+    public function hasStudents($id)
+    {
+        $classroom = $this->getClassroomById($id);
+        return $classroom ? $classroom->students()->count() > 0 : false;
     }
 }

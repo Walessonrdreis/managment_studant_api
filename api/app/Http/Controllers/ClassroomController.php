@@ -35,6 +35,7 @@ class ClassroomController extends Controller
         ]);
 
         $classroom = $this->classroomService->createClassroom($request->only('name'));
+        \Log::info('Sala de aula criada:', $classroom->toArray());
 
         return response()->json(['success' => true, 'message' => 'Sala de aula criada com sucesso', 'data' => $classroom], 201);
     }
