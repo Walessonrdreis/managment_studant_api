@@ -14,6 +14,7 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\PdfController;
 
 // Adicionando um prefixo 'api' para todas as rotas
 Route::prefix('api')->group(function () {
@@ -89,6 +90,9 @@ Route::prefix('api')->group(function () {
 
     // Rotas para RoleController
     Route::apiResource('roles', RoleController::class);
+
+    // Rotas para PdfController
+    Route::get('/gerar-pdf-aluno/{aluno_id}', [PdfController::class, 'gerarPdf']);
 });
 
 // Testar conexão com o banco de dados

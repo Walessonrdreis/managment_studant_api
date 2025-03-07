@@ -12,7 +12,15 @@ class StudentService {
 
     public function createStudent(array $data)
     {
+        // Gerar um número aleatório de 4 dígitos para o número de registro
+        $data['registration_number'] = $this->generateRandomRegistrationNumber();
+
         return Student::create($data);
+    }
+
+    private function generateRandomRegistrationNumber()
+    {
+        return rand(1000, 9999); // Gera um número aleatório entre 1000 e 9999
     }
 
     public function getAllStudents()

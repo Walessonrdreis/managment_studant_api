@@ -57,8 +57,8 @@ class StudentController extends Controller
     // Obter detalhes de um estudante específico
     public function show($id)
     {
-        $student = $this->studentService->getStudentById($id);
-        return $student ? response()->json($student) : response()->json(['message' => 'Estudante não encontrado'], 404);
+        $student = Student::findOrFail($id); // Isso lançará uma exceção se o aluno não for encontrado
+        return view('student', compact('student')); // Certifique-se de que o nome da view está correto
     }
 
     // Atualizar informações de um estudante

@@ -14,6 +14,7 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\PdfController;
 
 // Adicionando um prefixo 'api' para todas as rotas
 Route::prefix('api')->group(function () {
@@ -96,6 +97,9 @@ Route::prefix('api')->group(function () {
     Route::get('/students/{id}', [StudentController::class, 'show']);
     Route::put('/students/{id}', [StudentController::class, 'update']);
     Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+
+    // Rota para gerar PDF de aluno
+    Route::get('/gerar-pdf-aluno/{aluno_id}', [PdfController::class, 'gerarPdf']);
 });
 
 // Testar conexão com o banco de dados
@@ -106,4 +110,17 @@ Route::get('/test-db-connection', function () {
     } catch (\Exception $e) {
         return response()->json(['success' => false, 'message' => 'Erro ao conectar ao banco de dados: ' . $e->getMessage()], 500);
     }
+});
+
+Route::get('/student', function () {
+    $student = \App\Models\Student::find(1); // Substitua 1 pelo ID do aluno que você deseja buscar
+    return view('student', compact('student'));
+});
+
+Route::middleware(['web'])->group(function () {
+    Route::get('/students/{id}', [StudentController::class, 'show']);
+});
+
+Route::get('/test', function () {
+    return 'Test route is working!';
 });

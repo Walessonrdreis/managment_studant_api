@@ -15,7 +15,7 @@ class Student extends Model
      * Este modelo representa a tabela de estudantes no banco de dados.
      */
 
-    protected $fillable = ['name', 'email', 'date_of_birth', 'user_id', 'school_id'];
+    protected $fillable = ['name', 'email', 'date_of_birth', 'user_id', 'school_id', 'registration_number'];
 
     public function user(): BelongsTo
     {
