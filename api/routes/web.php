@@ -113,6 +113,12 @@ Route::get('/test-db-connection', function () {
     }
 });
 
+// Rota para a página principal
+Route::get('/', function () {
+    return view('home');
+});
+
+// Rotas existentes
 Route::get('/student', function () {
     return view('student');
 });
@@ -123,6 +129,40 @@ Route::get('/student/{id}', function ($id) {
         abort(404);
     }
     return view('student', compact('student'));
+});
+
+// Novas rotas para listar entidades
+Route::get('/students', function () {
+    $students = Student::with('school')->get();
+    return view('students', compact('students'));
+});
+
+Route::get('/teachers', function () {
+    $teachers = App\Models\Teacher::with('school')->get();
+    return view('teachers', compact('teachers'));
+});
+
+Route::get('/teacher/{id}', function ($id) {
+    $teacher = App\Models\Teacher::with(['subjects', 'classrooms.subject', 'school'])->find($id);
+    if (!$teacher) {
+        abort(404);
+    }
+    return view('teacher', compact('teacher'));
+});
+
+Route::get('/subjects', function () {
+    $subjects = App\Models\Subject::with('school')->get();
+    return view('subjects', compact('subjects'));
+});
+
+Route::get('/classrooms', function () {
+    $classrooms = App\Models\Classroom::with(['subject', 'teacher'])->get();
+    return view('classrooms', compact('classrooms'));
+});
+
+Route::get('/schools', function () {
+    $schools = App\Models\School::all();
+    return view('schools', compact('schools'));
 });
 
 Route::get('/test', function () {
