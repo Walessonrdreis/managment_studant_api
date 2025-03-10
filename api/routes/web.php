@@ -143,7 +143,7 @@ Route::get('/teachers', function () {
 });
 
 Route::get('/teacher/{id}', function ($id) {
-    $teacher = App\Models\Teacher::with(['subjects', 'classrooms.subject', 'school'])->find($id);
+    $teacher = App\Models\Teacher::with(['classrooms.subject', 'school'])->find($id);
     if (!$teacher) {
         abort(404);
     }
@@ -167,4 +167,28 @@ Route::get('/schools', function () {
 
 Route::get('/test', function () {
     return 'Test route is working!';
+});
+
+Route::get('/subject/{id}', function ($id) {
+    $subject = App\Models\Subject::with(['school', 'students', 'classrooms.teacher'])->find($id);
+    if (!$subject) {
+        abort(404);
+    }
+    return view('subject', compact('subject'));
+});
+
+Route::get('/classroom/{id}', function ($id) {
+    $classroom = App\Models\Classroom::with(['subject', 'teacher', 'students'])->find($id);
+    if (!$classroom) {
+        abort(404);
+    }
+    return view('classroom', compact('classroom'));
+});
+
+Route::get('/school/{id}', function ($id) {
+    $school = App\Models\School::with(['students', 'teachers', 'subjects'])->find($id);
+    if (!$school) {
+        abort(404);
+    }
+    return view('school', compact('school'));
 });
